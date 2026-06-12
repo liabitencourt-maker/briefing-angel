@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Briefing — Angel in Box</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --verde: #2C6E49;
+    --verde-claro: #3DAA72;
+    --verde-bg: #EEF5F1;
+    --dourado: #C8913A;
+    --escuro: #1A2E20;
+    --texto: #2D3B2E;
+    --cinza: #6B7B6C;
+    --borda: #C8DDD0;
+    --branco: #FFFFFF;
+    --fundo: #F7FAF8;
+  }
+
+  body {
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background: var(--fundo);
+    color: var(--texto);
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  .header {
+    background: var(--escuro);
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .header-inner {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 40px 24px 36px;
+    position: relative;
+    z-index: 2;
+  }
+  .header-tag {
+    display: inline-block;
+    border: 1px solid var(--verde-claro);
+    color: var(--verde-claro);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 4px 12px;
+    border-radius: 20px;
+    margin-bottom: 16px;
+  }
+  .header h1 {
+    font-size: 32px;
+    font-weight: 800;
+    color: #fff;
+    line-height: 1.15;
+    margin-bottom: 8px;
+  }
+  .header h1 span { color: var(--verde-claro); }
+  .header p {
+    color: #9BB8A5;
+    font-size: 14px;
+    line-height: 1.6;
+    max-width: 480px;
+  }
+  .header-line {
+    height: 3px;
+    background: linear-gradient(90deg, var(--verde-claro), transparent);
+    margin-top: 28px;
+  }
+  .progress-bar {
+    background: rgba(255,255,255,0.08);
+    height: 4px;
+  }
+  .progress-fill {
+    height: 4px;
+    background: var(--verde-claro);
+    width: 0%;
+    transition: width 0.4s ease;
+  }
+
+  /* SEÇÕES */
+  .container { max-width: 720px; margin: 0 auto; padding: 0 24px 80px; }
+
+  .section {
+    margin-top: 40px;
+    background: var(--branco);
+    border-radius: 12px;
+    border: 1px solid var(--borda);
+    overflow: hidden;
+  }
+  .section-header {
+    background: var(--verde-bg);
+    border-bottom: 1px solid var(--borda);
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .section-num {
+    width: 28px; height: 28px;
+    background: var(--verde);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .section-title { font-size: 14px; font-weight: 700; color: var(--escuro); }
+  .section-sub { font-size: 12px; color: var(--cinza); margin-top: 2px; }
+  .section-body { padding: 24px; display: flex; flex-direction: column; gap: 20px; }
+
+  /* CAMPOS */
+  .field { display: flex; flex-direction: column; gap: 6px; }
+  .field label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--texto);
+  }
+  .field label span { color: var(--dourado); margin-left: 2px; }
+  .field .hint { font-size: 11.5px; color: var(--cinza); line-height: 1.5; }
+
+  input[type="text"],
+  input[type="email"],
+  input[type="tel"],
+  input[type="url"],
+  input[type="number"],
+  textarea,
+  select {
+    border: 1.5px solid var(--borda);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 14px;
+    color: var(--texto);
+    background: #fff;
+    width: 100%;
+    transition: border-color 0.2s;
+    font-family: inherit;
+    outline: none;
+  }
+  input:focus, textarea:focus, select:focus {
+    border-color: var(--verde-claro);
+    box-shadow: 0 0 0 3px rgba(61,170,114,0.12);
+  }
+  textarea { resize: vertical; min-height: 90px; }
+
+  /* GRID 2 COLS */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 520px) { .grid-2 { grid-template-columns: 1fr; } }
+
+  /* CHECKBOX E RADIO */
+  .options { display: flex; flex-direction: column; gap: 8px; }
+  .options.row { flex-direction: row; flex-wrap: wrap; gap: 8px; }
+  .opt {
+    display: flex; align-items: flex-start; gap: 10px;
+    padding: 10px 14px;
+    border: 1.5px solid var(--borda);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+    user-select: none;
+  }
+  .opt:hover { border-color: var(--verde-claro); background: var(--verde-bg); }
+  .opt input { margin-top: 2px; accent-color: var(--verde); flex-shrink: 0; }
+  .opt-text { font-size: 13.5px; line-height: 1.4; }
+  .opt-text small { display: block; color: var(--cinza); font-size: 12px; }
+  .opt.selected { border-color: var(--verde); background: var(--verde-bg); }
+
+  /* PRODUTO CARD */
+  .produto-list { display: flex; flex-direction: column; gap: 16px; }
+  .produto-card {
+    border: 1.5px solid var(--borda);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .produto-card-header {
+    background: var(--verde-bg);
+    padding: 10px 16px;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--verde);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .produto-card-body { padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+  .btn-add {
+    display: flex; align-items: center; gap: 8px;
+    background: var(--verde-bg);
+    border: 1.5px dashed var(--verde-claro);
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--verde);
+    cursor: pointer;
+    transition: background 0.2s;
+    width: 100%;
+    justify-content: center;
+  }
+  .btn-add:hover { background: #ddf0e6; }
+  .btn-remove {
+    background: none; border: none;
+    color: #cc4444; font-size: 18px; cursor: pointer;
+    line-height: 1; padding: 0 4px;
+  }
+
+  /* DIVISOR */
+  .divider {
+    height: 1px; background: var(--borda); margin: 4px 0;
+  }
+
+  /* FOOTER / SUBMIT */
+  .footer-form {
+    max-width: 720px; margin: 32px auto 0; padding: 0 24px 60px;
+  }
+  .info-box {
+    background: var(--verde-bg);
+    border: 1px solid var(--borda);
+    border-radius: 10px;
+    padding: 16px 20px;
+    font-size: 13px;
+    color: var(--cinza);
+    line-height: 1.6;
+    margin-bottom: 20px;
+  }
+  .info-box strong { color: var(--verde); }
+  .btn-submit {
+    width: 100%;
+    background: var(--verde);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: 16px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    font-family: inherit;
+  }
+  .btn-submit:hover { background: #245a3c; }
+  .btn-submit:active { transform: scale(0.99); }
+
+  /* RESULTADO */
+  .resultado {
+    display: none;
+    max-width: 720px; margin: 32px auto; padding: 0 24px 60px;
+  }
+  .resultado.show { display: block; }
+  .resultado-box {
+    background: var(--branco);
+    border: 1px solid var(--borda);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .resultado-header {
+    background: var(--verde);
+    padding: 20px 24px;
+    color: #fff;
+    font-size: 15px;
+    font-weight: 700;
+  }
+  .resultado-header p { font-size: 12px; font-weight: 400; color: #a8d4bb; margin-top: 4px; }
+  .resultado-body {
+    padding: 20px 24px;
+    font-size: 13px;
+    line-height: 1.8;
+    white-space: pre-wrap;
+    font-family: 'Courier New', monospace;
+    color: var(--texto);
+    max-height: 600px;
+    overflow-y: auto;
+    background: #f9fbf9;
+  }
+  .btn-copy {
+    display: block;
+    width: calc(100% - 48px);
+    margin: 0 24px 24px;
+    background: var(--verde-bg);
+    border: 1.5px solid var(--verde-claro);
+    border-radius: 8px;
+    padding: 12px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--verde);
+    cursor: pointer;
+    font-family: inherit;
+    transition: background 0.2s;
+  }
+  .btn-copy:hover { background: #ddf0e6; }
+  .btn-novo {
+    display: block;
+    width: calc(100% - 48px);
+    margin: 0 24px 24px;
+    background: var(--verde);
+    border: none;
+    border-radius: 8px;
+    padding: 12px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #fff;
+    cursor: pointer;
+    font-family: inherit;
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+  <div class="header-inner">
+    <div class="header-tag">Briefing do Site</div>
+    <h1>Angel in Box<br><span>Cardápio Digital</span></h1>
+    <p>Preencha com calma — quanto mais detalhes, mais fiel o site fica à sua marca e ao seu cardápio.</p>
+    <div class="header-line"></div>
+  </div>
+</div>
+
+<form id="briefingForm" name="briefing-angel-in-box" method="POST" action="https://formspree.io/f/mojzpazz" enctype="multipart/form-data">
+<div class="container">
+  <!-- Netlify hidden fields -->
+  <input type="hidden" id="briefingCompiladoHidden" name="briefing_compilado" value="">
+
+  <!-- 1. CARDÁPIO — CATEGORIAS -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">1</div>
+      <div>
+        <div class="section-title">Categorias do Cardápio</div>
+        <div class="section-sub">Como os produtos são organizados no menu</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="field">
+        <label>Quais categorias o cardápio terá? <span>*</span></label>
+        <div class="hint">Marque todas que se aplicam. Você pode adicionar uma personalizada abaixo.</div>
+        <div class="options" style="margin-top:4px">
+          <label class="opt"><input type="checkbox" name="cat_marmitas" value="1"><span class="opt-text">Marmitas<small>Pratos completos em marmita individual ou família</small></span></label>
+          <label class="opt"><input type="checkbox" name="cat_lanches" value="1"><span class="opt-text">Lanches / Sanduíches<small>Naturais, quentes ou frios</small></span></label>
+          <label class="opt"><input type="checkbox" name="cat_saladas" value="1"><span class="opt-text">Saladas & Bowls<small>Opções leves e funcionais</small></span></label>
+          <label class="opt"><input type="checkbox" name="cat_sucos" value="1"><span class="opt-text">Sucos & Bebidas<small>Naturais, polpa ou industrializados</small></span></label>
+          <label class="opt"><input type="checkbox" name="cat_sobremesas" value="1"><span class="opt-text">Sobremesas<small>Doces, frutas ou iogurtes</small></span></label>
+          <label class="opt"><input type="checkbox" name="cat_combos" value="1"><span class="opt-text">Combos / Kits<small>Marmita + suco + sobremesa, etc.</small></span></label>
+        </div>
+      </div>
+      <div class="field">
+        <label>Outras categorias (se tiver)</label>
+        <input type="text" name="cat_outras" placeholder="Ex: Fit, Vegano, Infantil…">
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. PRODUTOS -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">2</div>
+      <div>
+        <div class="section-title">Produtos do Cardápio</div>
+        <div class="section-sub">Liste os itens que vão aparecer no site</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="field">
+        <div class="hint" style="background:var(--verde-bg);border:1px solid var(--borda);border-radius:8px;padding:12px 14px;color:var(--texto)">
+          📋 Adicione cada item do cardápio. Nome, descrição curta, tamanho/porção e preço. <br>
+          Não precisa ser tudo agora — pode completar depois — mas quanto mais, melhor!
+        </div>
+      </div>
+      <div class="produto-list" id="produtoList"></div>
+      <button type="button" class="btn-add" onclick="addProduto()">
+        + Adicionar produto ao cardápio
+      </button>
+    </div>
+  </div>
+
+  <!-- 3. PREÇOS E TAMANHOS -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">3</div>
+      <div>
+        <div class="section-title">Tamanhos e Preços</div>
+        <div class="section-sub">Como os valores são estruturados</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="field">
+        <label>As marmitas têm tamanhos diferentes? <span>*</span></label>
+        <div class="options row">
+          <label class="opt"><input type="radio" name="tem_tamanhos" value="sim"><span class="opt-text">Sim, tenho tamanhos</span></label>
+          <label class="opt"><input type="radio" name="tem_tamanhos" value="nao"><span class="opt-text">Não, preço único</span></label>
+          <label class="opt"><input type="radio" name="tem_tamanhos" value="depende"><span class="opt-text">Depende do prato</span></label>
+        </div>
+      </div>
+      <div class="field" id="campo_tamanhos">
+        <label>Quais tamanhos e preços base?</label>
+        <div class="hint">Ex: P — R$ 18,00 / M — R$ 22,00 / G — R$ 26,00 / GG (família) — R$ 45,00</div>
+        <textarea name="tamanhos_precos" placeholder="Liste os tamanhos e preços aqui..."></textarea>
+      </div>
+      <div class="field">
+        <label>Faixa de preço média dos produtos <span>*</span></label>
+        <div class="grid-2">
+          <div class="field">
+            <label style="font-weight:400;font-size:12px">Menor preço (R$)</label>
+            <input type="number" name="preco_min" placeholder="15" min="0">
+          </div>
+          <div class="field">
+            <label style="font-weight:400;font-size:12px">Maior preço (R$)</label>
+            <input type="number" name="preco_max" placeholder="55" min="0">
+          </div>
+        </div>
+      </div>
+      <div class="field">
+        <label>Os preços aparecem no site? <span>*</span></label>
+        <div class="hint">Alguns negócios preferem "consulte pelo WhatsApp".</div>
+        <div class="options row">
+          <label class="opt"><input type="radio" name="exibir_precos" value="sim"><span class="opt-text">Sim, exibir preços</span></label>
+          <label class="opt"><input type="radio" name="exibir_precos" value="nao"><span class="opt-text">Não, só no WhatsApp</span></label>
+          <label class="opt"><input type="radio" name="exibir_precos" value="parcial"><span class="opt-text">Só alguns</span></label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. PEDIDOS E PAGAMENTO -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">4</div>
+      <div>
+        <div class="section-title">Pedidos e Pagamento</div>
+        <div class="section-sub">Como o cliente compra e paga</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="field">
+        <label>Como o cliente faz o pedido? <span>*</span></label>
+        <div class="options">
+          <label class="opt"><input type="checkbox" name="pedido_whatsapp" value="1"><span class="opt-text">WhatsApp<small>Cliente manda mensagem diretamente</small></span></label>
+          <label class="opt"><input type="checkbox" name="pedido_form" value="1"><span class="opt-text">Formulário no site<small>Preenche nome, item, endereço e envia</small></span></label>
+          <label class="opt"><input type="checkbox" name="pedido_instagram" value="1"><span class="opt-text">Instagram / DM</span></label>
+          <label class="opt"><input type="checkbox" name="pedido_telefone" value="1"><span class="opt-text">Ligação telefônica</span></label>
+        </div>
+      </div>
+      <div class="field">
+        <label>Formas de pagamento aceitas <span>*</span></label>
+        <div class="options">
+          <label class="opt"><input type="checkbox" name="pag_pix" value="1"><span class="opt-text">PIX</span></label>
+          <label class="opt"><input type="checkbox" name="pag_dinheiro" value="1"><span class="opt-text">Dinheiro (na entrega)</span></label>
+          <label class="opt"><input type="checkbox" name="pag_cartao_debito" value="1"><span class="opt-text">Cartão de débito (na entrega)</span></label>
+          <label class="opt"><input type="checkbox" name="pag_cartao_credito" value="1"><span class="opt-text">Cartão de crédito (na entrega)</span></label>
+          <label class="opt"><input type="checkbox" name="pag_transferencia" value="1"><span class="opt-text">Transferência bancária</span></label>
+        </div>
+      </div>
+      <div class="field">
+        <label>Chave PIX (se quiser exibir no site)</label>
+        <input type="text" name="chave_pix" placeholder="CPF, e-mail, telefone ou chave aleatória">
+      </div>
+      <div class="field">
+        <label>Exige pagamento antecipado? <span>*</span></label>
+        <div class="options row">
+          <label class="opt"><input type="radio" name="pagamento_antecipado" value="sim"><span class="opt-text">Sim, paga antes</span></label>
+          <label class="opt"><input type="radio" name="pagamento_antecipado" value="nao"><span class="opt-text">Não, paga na entrega</span></label>
+          <label class="opt"><input type="radio" name="pagamento_antecipado" value="ambos"><span class="opt-text">Aceita os dois</span></label>
+        </div>
+      </div>
+      <div class="field">
+        <label>Alguma condição de pagamento especial?</label>
+        <div class="hint">Ex: desconto para pagamento no PIX, plano semanal com desconto, combo quinzenal…</div>
+        <textarea name="condicoes_especiais" placeholder="Descreva aqui..."></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. ENTREGA -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">5</div>
+      <div>
+        <div class="section-title">Entrega e Retirada</div>
+        <div class="section-sub">Logística e área de atendimento</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="field">
+        <label>Modalidades de entrega <span>*</span></label>
+        <div class="options">
+          <label class="opt"><input type="checkbox" name="entrega_delivery" value="1"><span class="opt-text">Delivery (entrega no endereço)<small>Com taxa de entrega</small></span></label>
+          <label class="opt"><input type="checkbox" name="entrega_retirada" value="1"><span class="opt-text">Retirada no local<small>Cliente busca</small></span></label>
+          <label class="opt"><input type="checkbox" name="entrega_gratis_acima" value="1"><span class="opt-text">Frete grátis acima de um valor<small>Ex: acima de R$ 40,00</small></span></label>
+        </div>
+      </div>
+      <div class="field">
+        <label>Taxa de entrega</label>
+        <div class="hint">Ex: R$ 5,00 dentro do centro / Grátis até 3km / A combinar conforme bairro</div>
+        <input type="text" name="taxa_entrega" placeholder="Descreva a taxa ou política de frete">
+      </div>
+      <div class="field">
+        <label>Área de entrega (bairros ou raio)</label>
+        <textarea name="area_entrega" placeholder="Ex: Atendo todos os bairros de Goiânia em até 10km do centro. Bairros com frete grátis: Setor Bueno, Jardim Goiás…"></textarea>
+      </div>
+      <div class="field">
+        <label>Endereço para retirada (se tiver)</label>
+        <input type="text" name="endereco_retirada" placeholder="Rua, número, bairro, cidade">
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. HORÁRIOS -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">6</div>
+      <div>
+        <div class="section-title">Horários de Funcionamento</div>
+        <div class="section-sub">Quando a cliente pode pedir e receber</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="field">
+        <label>Dias de atendimento <span>*</span></label>
+        <div class="options row">
+          <label class="opt"><input type="checkbox" name="dia_seg" value="Seg"><span class="opt-text">Seg</span></label>
+          <label class="opt"><input type="checkbox" name="dia_ter" value="Ter"><span class="opt-text">Ter</span></label>
+          <label class="opt"><input type="checkbox" name="dia_qua" value="Qua"><span class="opt-text">Qua</span></label>
+          <label class="opt"><input type="checkbox" name="dia_qui" value="Qui"><span class="opt-text">Qui</span></label>
+          <label class="opt"><input type="checkbox" name="dia_sex" value="Sex"><span class="opt-text">Sex</span></label>
+          <label class="opt"><input type="checkbox" name="dia_sab" value="Sáb"><span class="opt-text">Sáb</span></label>
+          <label class="opt"><input type="checkbox" name="dia_dom" value="Dom"><span class="opt-text">Dom</span></label>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="field">
+          <label>Horário de pedidos (início)</label>
+          <input type="text" name="horario_pedido_inicio" placeholder="Ex: 07h00 ou a partir de 8h">
+        </div>
+        <div class="field">
+          <label>Horário de pedidos (limite)</label>
+          <input type="text" name="horario_pedido_fim" placeholder="Ex: até 10h para entrega no almoço">
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="field">
+          <label>Horário de entrega (início)</label>
+          <input type="text" name="horario_entrega_inicio" placeholder="Ex: 11h30">
+        </div>
+        <div class="field">
+          <label>Horário de entrega (fim)</label>
+          <input type="text" name="horario_entrega_fim" placeholder="Ex: 13h30">
+        </div>
+      </div>
+      <div class="field">
+        <label>Observações sobre horários</label>
+        <input type="text" name="obs_horarios" placeholder="Ex: Pedidos com 1 dia de antecedência / Jantar disponível sexta e sábado">
+      </div>
+    </div>
+  </div>
+
+  <!-- 7. SITE -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">7</div>
+      <div>
+        <div class="section-title">Preferências do Site</div>
+        <div class="section-sub">Visual e funcionalidades</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="field">
+        <label>Funcionalidade prioritária do site <span>*</span></label>
+        <div class="options">
+          <label class="opt"><input type="radio" name="funcionalidade" value="cardapio"><span class="opt-text">Mostrar o cardápio completo com fotos e preços</span></label>
+          <label class="opt"><input type="radio" name="funcionalidade" value="pedido"><span class="opt-text">Facilitar o pedido (formulário + botão WhatsApp)</span></label>
+          <label class="opt"><input type="radio" name="funcionalidade" value="ambos"><span class="opt-text">Os dois com igual importância</span></label>
+        </div>
+      </div>
+  </div>
+
+  <!-- 8. OBSERVAÇÕES -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">8</div>
+      <div>
+        <div class="section-title">Informações Extras</div>
+        <div class="section-sub">Tudo que você quer que o site comunique</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="field">
+        <label>Diferenciais da Angel in Box</label>
+        <div class="hint">O que faz vocês especiais? Ingredientes frescos, tempero caseiro, embalagem caprichada, pontualidade…</div>
+        <textarea name="diferenciais" placeholder="Ex: Usamos apenas ingredientes frescos comprados diariamente. Marmitas sem conservantes. Entrega sempre no horário combinado."></textarea>
+      </div>
+      <div class="field">
+        <label>Público principal</label>
+        <div class="hint">Quem costuma pedir? Trabalhadores, famílias, estudantes, idosos, pessoas fit…</div>
+        <input type="text" name="publico" placeholder="Ex: Trabalhadores do centro que não têm tempo de cozinhar">
+      </div>
+      <div class="field">
+        <label>Observações finais ou detalhes que acha importante dar destaque</label>
+        <div class="hint">Ex: promoção especial, aviso de feriado, produto favorito dos clientes, algo que quer que apareça em destaque na página inicial…</div>
+        <textarea name="obs_finais" placeholder="Escreva aqui qualquer informação que mereça destaque especial no site…"></textarea>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /container -->
+
+<div class="footer-form">
+  <div class="info-box">
+    <strong>Como funciona após o envio?</strong><br>
+    Suas respostas serão organizadas e enviadas para a Lia Bitencourt iniciar o desenvolvimento.
+    O prazo começa a contar após a confirmação do pagamento. Qualquer dúvida, fale pelo WhatsApp.
+  </div>
+  <button type="submit" class="btn-submit">✓ Enviar Briefing Completo</button>
+</div>
+</form>
+
+<!-- RESULTADO -->
+<div class="resultado" id="resultado">
+  <div class="resultado-box">
+    <div class="resultado-header">
+      ✅ Briefing recebido!
+      <p>Copie o texto abaixo e envie para a Lia Bitencourt pelo WhatsApp ou e-mail.</p>
+    </div>
+    <div class="resultado-body" id="resultadoTexto"></div>
+    <button class="btn-copy" onclick="copiarTexto()">📋 Copiar briefing completo</button>
+    <button class="btn-novo" onclick="novoForm()">← Preencher novamente</button>
+  </div>
+</div>
+
+<script>
+// Produto counter
+let produtoCount = 0;
+
+function addProduto() {
+  produtoCount++;
+  const n = produtoCount;
+  const div = document.createElement('div');
+  div.className = 'produto-card';
+  div.id = `produto_${n}`;
+  div.innerHTML = `
+    <div class="produto-card-header">
+      Produto ${n}
+      <button type="button" class="btn-remove" onclick="removeProduto(${n})">×</button>
+    </div>
+    <div class="produto-card-body">
+      <div class="grid-2">
+        <div class="field">
+          <label>Nome do produto</label>
+          <input type="text" name="prod_${n}_nome" placeholder="Ex: Marmita Frango Grelhado">
+        </div>
+        <div class="field">
+          <label>Categoria</label>
+          <select name="prod_${n}_cat">
+            <option value="">Selecione…</option>
+            <option>Marmitas</option>
+            <option>Lanches</option>
+            <option>Saladas & Bowls</option>
+            <option>Sucos & Bebidas</option>
+            <option>Sobremesas</option>
+            <option>Combos</option>
+            <option>Outro</option>
+          </select>
+        </div>
+      </div>
+      <div class="field">
+        <label>Descrição curta</label>
+        <input type="text" name="prod_${n}_desc" placeholder="Ex: Frango grelhado, arroz integral, feijão e salada">
+      </div>
+      <div class="grid-2">
+        <div class="field">
+          <label>Tamanho / Porção</label>
+          <input type="text" name="prod_${n}_tamanho" placeholder="Ex: P / M / G / 400g">
+        </div>
+        <div class="field">
+          <label>Preço (R$)</label>
+          <input type="text" name="prod_${n}_preco" placeholder="Ex: 22,00">
+        </div>
+      </div>
+      <div class="field">
+        <label>Observações (opcional)</label>
+        <input type="text" name="prod_${n}_obs" placeholder="Ex: Sem glúten / Opção fit / Disponível só na sexta">
+      </div>
+      <div class="field">
+        <label>Foto do prato (opcional)</label>
+        <div class="hint">Envie uma foto se tiver — será usada no cardápio do site.</div>
+        <input type="file" name="prod_${n}_foto" accept="image/*" id="foto_${n}"
+          style="border:1.5px dashed var(--borda);border-radius:8px;padding:8px 12px;font-size:13px;background:var(--fundo);cursor:pointer;width:100%"
+          onchange="previewFoto(${n}, this)">
+        <div id="preview_${n}" style="margin-top:6px;display:none">
+          <img id="previewImg_${n}" style="max-height:80px;border-radius:6px;border:1px solid var(--borda)">
+        </div>
+      </div>
+    </div>`;
+  document.getElementById('produtoList').appendChild(div);
+  updateProgress();
+}
+
+function removeProduto(n) {
+  const el = document.getElementById(`produto_${n}`);
+  if (el) el.remove();
+}
+
+// Progress
+function updateProgress() {
+  const fields = document.querySelectorAll('input[required], textarea[required]');
+  let filled = 0;
+  fields.forEach(f => { if (f.value.trim()) filled++; });
+  const pct = Math.min(100, Math.round((filled / fields.length) * 100));
+  document.getElementById('progressFill').style.width = pct + '%';
+}
+
+document.addEventListener('input', updateProgress);
+document.addEventListener('change', updateProgress);
+
+// Opt highlight
+document.addEventListener('change', function(e) {
+  if (e.target.type === 'checkbox' || e.target.type === 'radio') {
+    const opt = e.target.closest('.opt');
+    if (!opt) return;
+    if (e.target.type === 'radio') {
+      const name = e.target.name;
+      document.querySelectorAll(`input[name="${name}"]`).forEach(r => {
+        r.closest('.opt')?.classList.remove('selected');
+      });
+    }
+    if (e.target.checked) opt.classList.add('selected');
+    else opt.classList.remove('selected');
+  }
+});
+
+// Submit
+document.getElementById('briefingForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  // monta o texto do briefing e coloca em campo hidden antes de submeter
+  const fd = new FormData(this);
+  const data = {};
+  fd.forEach((v, k) => {
+    if (data[k]) {
+      data[k] = Array.isArray(data[k]) ? [...data[k], v] : [data[k], v];
+    } else {
+      data[k] = v;
+    }
+  });
+
+  // Coletar dias
+  const dias = ['Seg','Ter','Qua','Qui','Sex','Sáb','Dom'];
+  const diasMarcados = dias.filter(d => {
+    const key = `dia_${d.toLowerCase().replace('á','a').replace('é','e')}`;
+    return fd.get(key);
+  });
+
+  // Coletar produtos
+  let produtos = [];
+  for (let i = 1; i <= produtoCount; i++) {
+    const nome = fd.get(`prod_${i}_nome`);
+    if (nome) {
+      produtos.push({
+        nome, cat: fd.get(`prod_${i}_cat`), desc: fd.get(`prod_${i}_desc`),
+        tam: fd.get(`prod_${i}_tamanho`), preco: fd.get(`prod_${i}_preco`),
+        obs: fd.get(`prod_${i}_obs`)
+      });
+    }
+  }
+
+  // Coletar categorias
+  const cats = [];
+  ['marmitas','lanches','saladas','sucos','sobremesas','combos'].forEach(c => {
+    if (fd.get(`cat_${c}`)) cats.push(c.charAt(0).toUpperCase() + c.slice(1));
+  });
+  if (fd.get('cat_outras')) cats.push(fd.get('cat_outras'));
+
+  // Formas de pedido
+  const pedidos = [];
+  if (fd.get('pedido_whatsapp')) pedidos.push('WhatsApp');
+  if (fd.get('pedido_form')) pedidos.push('Formulário no site');
+  if (fd.get('pedido_instagram')) pedidos.push('Instagram/DM');
+  if (fd.get('pedido_telefone')) pedidos.push('Telefone');
+
+  // Formas de pagamento
+  const pags = [];
+  if (fd.get('pag_pix')) pags.push('PIX');
+  if (fd.get('pag_dinheiro')) pags.push('Dinheiro');
+  if (fd.get('pag_cartao_debito')) pags.push('Cartão débito');
+  if (fd.get('pag_cartao_credito')) pags.push('Cartão crédito');
+  if (fd.get('pag_transferencia')) pags.push('Transferência');
+
+  // Entrega
+  const entregas = [];
+  if (fd.get('entrega_delivery')) entregas.push('Delivery');
+  if (fd.get('entrega_retirada')) entregas.push('Retirada no local');
+  if (fd.get('entrega_gratis_acima')) entregas.push('Frete grátis acima de um valor');
+
+  let txt = `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+BRIEFING — ANGEL IN BOX
+Cardápio Digital com Pedidos Online
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+▌ SOBRE O NEGÓCIO
+Proprietária: ${fd.get('nome_proprietaria') || '—'}
+WhatsApp: ${fd.get('whatsapp') || '—'}
+Cidade: ${fd.get('cidade') || '—'}
+Instagram: ${fd.get('instagram') || '—'}
+E-mail: ${fd.get('email') || '—'}
+Descrição: ${fd.get('descricao') || '—'}
+
+▌ CARDÁPIO — CATEGORIAS
+${cats.length ? cats.join(', ') : '—'}
+
+▌ PRODUTOS CADASTRADOS (${produtos.length})
+${produtos.length === 0 ? '(nenhum produto adicionado)' :
+  produtos.map((p, i) => `${i+1}. ${p.nome}${p.cat ? ` [${p.cat}]` : ''}
+   Descrição: ${p.desc || '—'}
+   Tamanho/Porção: ${p.tam || '—'} | Preço: R$ ${p.preco || '—'}
+   Obs: ${p.obs || '—'}`).join('\n')}
+
+▌ TAMANHOS E PREÇOS
+Tem tamanhos: ${fd.get('tem_tamanhos') || '—'}
+Faixa de preço: R$ ${fd.get('preco_min') || '—'} a R$ ${fd.get('preco_max') || '—'}
+Exibir preços no site: ${fd.get('exibir_precos') || '—'}
+Detalhamento:
+${fd.get('tamanhos_precos') || '—'}
+
+▌ PEDIDOS E PAGAMENTO
+Canais de pedido: ${pedidos.join(', ') || '—'}
+Formas de pagamento: ${pags.join(', ') || '—'}
+Chave PIX: ${fd.get('chave_pix') || '—'}
+Pagamento antecipado: ${fd.get('pagamento_antecipado') || '—'}
+Condições especiais: ${fd.get('condicoes_especiais') || '—'}
+
+▌ ENTREGA E RETIRADA
+Modalidades: ${entregas.join(', ') || '—'}
+Taxa de entrega: ${fd.get('taxa_entrega') || '—'}
+Área de entrega: ${fd.get('area_entrega') || '—'}
+Endereço para retirada: ${fd.get('endereco_retirada') || '—'}
+
+▌ HORÁRIOS
+Dias: ${diasMarcados.join(', ') || '—'}
+Pedidos: ${fd.get('horario_pedido_inicio') || '—'} até ${fd.get('horario_pedido_fim') || '—'}
+Entregas: ${fd.get('horario_entrega_inicio') || '—'} até ${fd.get('horario_entrega_fim') || '—'}
+Obs: ${fd.get('obs_horarios') || '—'}
+
+▌ PREFERÊNCIAS DO SITE
+Domínio: ${fd.get('tem_dominio') || '—'} ${fd.get('dominio_desejado') ? `— ${fd.get('dominio_desejado')}` : ''}
+Fotos: ${fd.get('tem_fotos') || '—'}
+Funcionalidade principal: ${fd.get('funcionalidade') || '—'}
+Referências: ${fd.get('referencias') || '—'}
+Páginas especiais: ${fd.get('paginas_especiais') || '—'}
+
+▌ INFORMAÇÕES EXTRAS
+Diferenciais: ${fd.get('diferenciais') || '—'}
+Público: ${fd.get('publico') || '—'}
+Observações: ${fd.get('obs_finais') || '—'}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Briefing gerado via Lia Bitencourt
+liabitencourt.com.br
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`;
+
+  window._briefingTxt = txt;
+
+  // Preenche campo hidden com o briefing compilado
+  document.getElementById('briefingCompiladoHidden').value = txt;
+
+  // Submete via Formspree
+  const form = document.getElementById('briefingForm');
+  const formData = new FormData(form);
+
+  fetch('https://formspree.io/f/mojzpazz', {
+    method: 'POST',
+    body: formData,
+    headers: { 'Accept': 'application/json' }
+  })
+  .then(res => {
+    if (res.ok) {
+      document.getElementById('resultadoTexto').textContent = txt;
+      document.getElementById('briefingForm').style.display = 'none';
+      document.getElementById('resultado').classList.add('show');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      throw new Error('Erro no envio');
+    }
+  })
+  .catch(() => {
+    document.getElementById('resultadoTexto').textContent = txt;
+    document.getElementById('briefingForm').style.display = 'none';
+    document.getElementById('resultado').classList.add('show');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    alert('Atenção: não foi possível enviar automaticamente. Copie o texto abaixo e envie pelo WhatsApp.');
+  });
+});
+
+function copiarTexto() {
+  navigator.clipboard.writeText(window._briefingTxt).then(() => {
+    const btn = document.querySelector('.btn-copy');
+    btn.textContent = '✅ Copiado!';
+    setTimeout(() => btn.textContent = '📋 Copiar briefing completo', 2000);
+  });
+}
+
+function previewFoto(n, input) {
+  const preview = document.getElementById('preview_' + n);
+  const img = document.getElementById('previewImg_' + n);
+  if (input.files && input.files[0]) {
+    const reader = new FileReader();
+    reader.onload = e => { img.src = e.target.result; preview.style.display = 'block'; };
+    reader.readAsDataURL(input.files[0]);
+  } else {
+    preview.style.display = 'none';
+  }
+}
+
+function novoForm() {
+  document.getElementById('briefingForm').style.display = 'block';
+  document.getElementById('resultado').classList.remove('show');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+</body>
+</html>
