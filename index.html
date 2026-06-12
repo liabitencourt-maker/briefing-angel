@@ -322,7 +322,7 @@
   </div>
 </div>
 
-<form id="briefingForm" name="briefing-angel-in-box" method="POST" action="https://formspree.io/f/mojzpazz" enctype="multipart/form-data">
+<form id="briefingForm" name="briefing-angel-in-box" method="POST" action="https://formspree.io/f/mojzpazz">
 <div class="container">
   <!-- Netlify hidden fields -->
   <input type="hidden" id="briefingCompiladoHidden" name="briefing_compilado" value="">
@@ -686,13 +686,8 @@ function addProduto() {
         <input type="text" name="prod_${n}_obs" placeholder="Ex: Sem glúten / Opção fit / Disponível só na sexta">
       </div>
       <div class="field">
-        <label>Foto do prato (opcional)</label>
-        <div class="hint">Envie uma foto se tiver — será usada no cardápio do site.</div>
-        <input type="file" name="prod_${n}_foto" accept="image/*" id="foto_${n}"
-          style="border:1.5px dashed var(--borda);border-radius:8px;padding:8px 12px;font-size:13px;background:var(--fundo);cursor:pointer;width:100%"
-          onchange="previewFoto(${n}, this)">
-        <div id="preview_${n}" style="margin-top:6px;display:none">
-          <img id="previewImg_${n}" style="max-height:80px;border-radius:6px;border:1px solid var(--borda)">
+        <div class="hint" style="background:#FFF8EC;border:1px solid #E8C97A;border-radius:8px;padding:10px 14px;color:#7A5C00">
+          📸 <strong>Foto:</strong> Envie as fotos dos pratos pelo WhatsApp após enviar o briefing, com o nome de cada prato.
         </div>
       </div>
     </div>`;
@@ -900,18 +895,6 @@ function copiarTexto() {
     btn.textContent = '✅ Copiado!';
     setTimeout(() => btn.textContent = '📋 Copiar briefing completo', 2000);
   });
-}
-
-function previewFoto(n, input) {
-  const preview = document.getElementById('preview_' + n);
-  const img = document.getElementById('previewImg_' + n);
-  if (input.files && input.files[0]) {
-    const reader = new FileReader();
-    reader.onload = e => { img.src = e.target.result; preview.style.display = 'block'; };
-    reader.readAsDataURL(input.files[0]);
-  } else {
-    preview.style.display = 'none';
-  }
 }
 
 function novoForm() {
